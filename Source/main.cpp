@@ -1,7 +1,7 @@
 #include <iostream>
+#include <string>
 #include "brute_force.h"
 #include "ciphers.h"
-#include <string>
 
 int main()
 {
