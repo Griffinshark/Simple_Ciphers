@@ -2,49 +2,14 @@
 
 std::string ciphers::VigenereEncrypt(std::string toEncrypt)
 {
-    std::string keyword{"sharks"};
+    std::string keyword{"SHARKS"};
     std::string key{KeyGenerator(keyword, static_cast<int>(toEncrypt.size()))};
-
-    // Generate the "Vigenere Square" ----------------------------------------------------------------------------------
-    unsigned char vigenereSquare[26][26];
-    int charCount{0};
-
-    // Rows
-    for (int i = 0; i < 26; ++i)
-    {
-        charCount = 0;
-
-        // Columns
-        for (int j = i; j < 26; ++j)
-        {
-            // Start at ASCII 'a' and add 'j' to get the correct character
-            vigenereSquare[i][charCount] = 'a' + j;
-
-            ++charCount;
-        }
-
-        // Happens anytime outside the first row
-        if (charCount != 26)
-        {
-            int tailLength{26 - charCount};
-
-            // Replace the tail end of the row with the start of the alphabet up to its length
-            for (int k = 0; k < tailLength; ++k)
-            {
-                vigenereSquare[i][charCount] = 'a' + k;
-
-                ++charCount;
-            }
-        }
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-
     std::string encryptedWord;
 
-    // Generate the encrypted word
+    // E[i] = (P[i] + K[i]) % 26 | We add 'A' to get the char onto the capital letters for ASCII
     for (int i = 0; i < toEncrypt.size(); ++i)
     {
-        encryptedWord += char(vigenereSquare[(toEncrypt[i] - 97)][(key[i] - 97)]);
+        encryptedWord += char(((toEncrypt[i] + key[i]) % 26) + 'A');
     }
 
     return encryptedWord;
@@ -52,61 +17,15 @@ std::string ciphers::VigenereEncrypt(std::string toEncrypt)
 
 std::string ciphers::VigenereDecrypt(std::string toDecrypt)
 {
-    std::string keyword{"sharks"};
+    std::string keyword{"SHARKS"};
     std::string key{KeyGenerator(keyword, static_cast<int>(toDecrypt.size()))};
-
-    // Generate the "Vigenere Square" ----------------------------------------------------------------------------------
-    unsigned char vigenereSquare[26][26];
-    int charCount{0};
-
-    // Rows
-    for (int i = 0; i < 26; ++i)
-    {
-        charCount = 0;
-
-        // Columns
-        for (int j = i; j < 26; ++j)
-        {
-            // Start at ASCII 'a' and add 'j' to get the correct character
-            vigenereSquare[i][charCount] = 'a' + j;
-
-            ++charCount;
-        }
-
-        // Happens anytime outside the first row
-        if (charCount != 26)
-        {
-            int tailLength{26 - charCount};
-
-            // Replace the tail end of the row with the start of the alphabet up to its length
-            for (int k = 0; k < tailLength; ++k)
-            {
-                vigenereSquare[i][charCount] = 'a' + k;
-
-                ++charCount;
-            }
-        }
-    }
-    // -----------------------------------------------------------------------------------------------------------------
-
     std::string decryptedWord;
 
-    // Generate the decrypted word
     for (int i = 0; i < toDecrypt.size(); ++i)
     {
-        // charCount, in this instance, is keeping track of the decrypted column
-        charCount = 0;
-
-        // Search through the row of 'key[i] - 97'
-        for (int j = 0; j < 26; ++j)
-        {
-            if (vigenereSquare[(key[i] - 97)][j] == toDecrypt[i])
-            {
-                decryptedWord += char(charCount + 97);
-            }
-
-            ++charCount;
-        }
+        // D[i] = (E[i] - K[i]) % 26 | negative values mess this up so we use abs() | We add 'A' to get the chars
+        // onto the capital letters for ASCII
+        decryptedWord += char((abs(toDecrypt[i] - key[i]) % 26) + 'A');
     }
 
     return decryptedWord;
@@ -115,21 +34,20 @@ std::string ciphers::VigenereDecrypt(std::string toDecrypt)
 std::string ciphers::CaesarEncrypt(const std::string& toEncrypt)
 {
     int key{11};
-    int shift{0};
+    std::string shiftedAlphabet;
+
+    // Create new "shifted" alphabet starting from ASCII 'A'
+    for (int i = 0; i < 26; ++i)
+    {
+        shiftedAlphabet += char(((i + key) % 26) + 'A');
+    }
+
     std::string encryptedWord;
 
+    // Encrypt word with the new shifted alphabet
     for (char i : toEncrypt)
     {
-        shift = i + key;
-
-        // If shift goes past 'z', continue at 'a'
-        if (shift > 122)
-        {
-            shift = 96 + (shift - 122);
-        }
-
-        // Add the current character shifted
-        encryptedWord += char(shift);
+        encryptedWord += shiftedAlphabet[i - 'A'];
     }
 
     return encryptedWord;
@@ -145,10 +63,10 @@ std::string ciphers::CaesarDecrypt(const std::string& toDecrypt)
     {
         shift = i - key;
 
-        // If shift goes past 'a', continue at 'z'
-        if (shift < 97)
+        // If shift goes past 'A', continue at 'Z'
+        if (shift < 65)
         {
-            shift = 123 - (97 - shift);
+            shift = 91 - (65 - shift);
         }
 
         // Add the current character shifted
