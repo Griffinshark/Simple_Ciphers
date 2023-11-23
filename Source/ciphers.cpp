@@ -1,8 +1,7 @@
 #include "ciphers.h"
 
-std::string ciphers::VigenereEncrypt(std::string toEncrypt)
+std::string ciphers::VigenereEncrypt(const std::string& toEncrypt, const std::string& keyword)
 {
-    std::string keyword{"SHARKS"};
     std::string key{KeyGenerator(keyword, static_cast<int>(toEncrypt.size()))};
     std::string encryptedWord;
 
@@ -15,9 +14,8 @@ std::string ciphers::VigenereEncrypt(std::string toEncrypt)
     return encryptedWord;
 }
 
-std::string ciphers::VigenereDecrypt(std::string toDecrypt)
+std::string ciphers::VigenereDecrypt(const std::string& toDecrypt, const std::string& keyword)
 {
-    std::string keyword{"SHARKS"};
     std::string key{KeyGenerator(keyword, static_cast<int>(toDecrypt.size()))};
     std::string decryptedWord;
 
@@ -31,9 +29,8 @@ std::string ciphers::VigenereDecrypt(std::string toDecrypt)
     return decryptedWord;
 }
 
-std::string ciphers::CaesarEncrypt(const std::string& toEncrypt)
+std::string ciphers::CaesarEncrypt(const std::string& toEncrypt, const int& key)
 {
-    int key{11};
     std::string shiftedAlphabet;
 
     // Create new "shifted" alphabet starting from ASCII 'A'
@@ -53,9 +50,8 @@ std::string ciphers::CaesarEncrypt(const std::string& toEncrypt)
     return encryptedWord;
 }
 
-std::string ciphers::CaesarDecrypt(const std::string& toDecrypt)
+std::string ciphers::CaesarDecrypt(const std::string& toDecrypt, const int& key)
 {
-    int key{11};
     int shift{0};
     std::string decryptedWord;
 
@@ -76,7 +72,7 @@ std::string ciphers::CaesarDecrypt(const std::string& toDecrypt)
     return decryptedWord;
 }
 
-std::string ciphers::KeyGenerator(std::string keyword, int length)
+std::string ciphers::KeyGenerator(const std::string& keyword, const int& length)
 {
     std::string key;
     int digitCount{0};

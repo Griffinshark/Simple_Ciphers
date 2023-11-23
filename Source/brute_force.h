@@ -2,6 +2,7 @@
 #define SIMPLE_CIPHERS_BRUTE_FORCE_H
 
 #include <string>
+#include <fstream>
 
 class BruteForce{
     /* Decrypt a given ciphertext using brute force attacks */
@@ -13,5 +14,11 @@ class BruteForce{
         static char getShiftedLetter(const char c, const int key);
         static char getShiftedDigit(const char c, const int key);
 };
+
+namespace BruteForceAlgorithms
+{
+    // Takes in an encrypted word and generates a list of all possible shifts/keys for a Caesar Cipher
+    void GenerateCaesarList(const std::string& EncryptedWord);
+}
 
 #endif // SIMPLE_CIPHERS_BRUTE_FORCE_H
