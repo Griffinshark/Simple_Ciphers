@@ -12,7 +12,6 @@ class BruteForce{
 
     private:
         static char getShiftedLetter(const char c, const int key);
-        static char getShiftedDigit(const char c, const int key);
 };
 
 namespace BruteForceAlgorithms
