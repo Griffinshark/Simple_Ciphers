@@ -43,13 +43,9 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
     // Returns a decoded string if cipher was successfully decrypted and an empty string otherwise
     // ciphertext is an uppercase string
 
-    std::ifstream file("./Source/word-test.txt");
-    // std::ifstream file("words.txt");
+    std::ifstream file("./Source/words.txt"); // use this for catch testing
+    //std::ifstream file("words.txt");
     std::string word = "";
-
-    if (!file.is_open()){
-        std::cout << "ERROR";
-    }
 
     if (file.is_open()){
         while (getline(file,word)){

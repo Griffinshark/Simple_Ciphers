@@ -15,15 +15,10 @@
 
 TEST_CASE("Function: caesar attack", "[brute-force]"){
 	// key = 7
-
 	REQUIRE(BruteForce::caesarAttack("hXDLYAFg", "aQWERTYz") == "aQWERTYz");
 }
 
 TEST_CASE("Function: vigenere attack", "[brute-force]"){
-	//REQUIRE(ciphers::VigenereEncrypt("STRAWBERRY","KEY") == "CXPKAZOVPI");
-	//REQUIRE(ciphers::VigenereEncrypt("STRAWBERRY","FLUX") == "XELXBMYOWJ");
-	//REQUIRE(ciphers::VigenereDecrypt("CXPKAZOVPI","KEY") == "STRAWBERRY");
-	//REQUIRE(ciphers::VigenereDecrypt("XELXBMYOWJ","FLUX") == "STRAWBERRY");
-
-	//REQUIRE(BruteForce::vigenereAttack("XELXBMYOWJ", "STRAWBERRY") == "STRAWBERRY");
+	REQUIRE(BruteForce::vigenereAttack("XELXBMYOWJ", "STRAWBERRY") == "STRAWBERRY");
+	REQUIRE(BruteForce::vigenereAttack("HGECZGGOCYLKAUVUKOAPGIIKFAEIKBNHLKNFHCWAAHSQF", "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS") == "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS");
 }
