@@ -26,16 +26,16 @@ std::string BruteForce::caesarAttack(const std::string ciphertext, const std::st
     // Tries out every possible key until a match with the plaintext is found.
     // Handles upper and lower case letters in the ciphertext.
 
-    std::string decryptedText = "";
-
     for(int i = 0; i < 26; i++){
-        for(char c : plaintext){
+        std::string decryptedText = "";
+        for(char c : ciphertext){
             decryptedText += getShiftedLetter(c, i);
         }
-        if (decryptedText == plaintext){ break; }
+
+        if (decryptedText == plaintext){ return decryptedText; }
     }
 
-    return decryptedText;
+    return "";
 }
 
 std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::string plaintext){ 
