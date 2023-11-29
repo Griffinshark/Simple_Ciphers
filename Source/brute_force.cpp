@@ -3,6 +3,9 @@
 
 #include <string>
 #include <cstring>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 char BruteForce::getShiftedLetter(const char c, const int key){
     // Returns the new letter after the key shift.
@@ -28,16 +31,52 @@ std::string BruteForce::caesarAttack(const std::string ciphertext, const std::st
     for(int i = 0; i < 26; i++){
         for(char c : plaintext){
             decryptedText += getShiftedLetter(c, i);
-            if (decryptedText == plaintext){ break; }
         }
+        if (decryptedText == plaintext){ break; }
     }
 
     return decryptedText;
 }
 
-std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::string plaintext){ return ""; }
+std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::string plaintext){ 
+    // Performs a dictionary attack to break cipher
+    // Returns a decoded string if cipher was successfully decrypted and an empty string otherwise
+    // ciphertext is an uppercase string
 
-void BruteForceAlgorithms::GenerateCaesarList(const std::string& EncryptedWord)
+    std::ifstream file("./Source/word-test.txt");
+    // std::ifstream file("words.txt");
+    std::string word = "";
+
+    if (!file.is_open()){
+        std::cout << "ERROR";
+    }
+
+    if (file.is_open()){
+        while (getline(file,word)){
+
+            if (word.size() > ciphertext.size()){ continue; }
+
+            std::string upper = "";
+
+            for (char c : word){
+                upper += toupper(c);
+            }
+
+            std::string decodedText = ciphers::VigenereDecrypt(ciphertext,upper);
+
+            if (decodedText == plaintext){ 
+               file.close();
+               return decodedText; 
+             }
+        }
+    }
+
+    file.close();
+
+    return ""; 
+}
+
+/*void BruteForceAlgorithms::GenerateCaesarList(const std::string& EncryptedWord)
 {
     // Open the file to write to
     std::ofstream outputFile("generated_caesar.txt");
@@ -50,5 +89,5 @@ void BruteForceAlgorithms::GenerateCaesarList(const std::string& EncryptedWord)
         outputFile << temp << std::endl;
     }
 
-    outputFile.close();
-}
+    outputFile.close(); 
+} */

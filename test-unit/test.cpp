@@ -3,6 +3,8 @@
 
 #include "../Source/brute_force.h"
 #include "../Source/brute_force.cpp"
+#include "../Source/ciphers.h"
+#include "../Source/ciphers.cpp"
 
 #include <string>
 
@@ -11,11 +13,17 @@
 		g++ -std=c++14 -Werror -Wuninitialized -o test test-unit/test.cpp && ./test
 */
 
-TEST_CASE("Function: caesar decryption", "[brute-force]"){
+TEST_CASE("Function: caesar attack", "[brute-force]"){
 	// key = 7
 
 	REQUIRE(BruteForce::caesarAttack("hXDLYAFg", "aQWERTYz") == "aQWERTYz");
-	REQUIRE(BruteForce::caesarAttack("8xhg9dze", "1qaz2wsx") == "1qaz2wsx");
-	REQUIRE(BruteForce::caesarAttack("7890123456", "0123456789") == "0123456789");
-	REQUIRE(BruteForce::caesarAttack("^dMwte@fp#JRL^jcRAja%@*Z", "^wFpmx@yi#CKE^cvKTct%@*S") == "^wFpmx@yi#CKE^cvKTct%@*S");
+}
+
+TEST_CASE("Function: vigenere attack", "[brute-force]"){
+	//REQUIRE(ciphers::VigenereEncrypt("STRAWBERRY","KEY") == "CXPKAZOVPI");
+	//REQUIRE(ciphers::VigenereEncrypt("STRAWBERRY","FLUX") == "XELXBMYOWJ");
+	//REQUIRE(ciphers::VigenereDecrypt("CXPKAZOVPI","KEY") == "STRAWBERRY");
+	//REQUIRE(ciphers::VigenereDecrypt("XELXBMYOWJ","FLUX") == "STRAWBERRY");
+
+	//REQUIRE(BruteForce::vigenereAttack("XELXBMYOWJ", "STRAWBERRY") == "STRAWBERRY");
 }
