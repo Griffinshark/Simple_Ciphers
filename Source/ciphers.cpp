@@ -21,9 +21,10 @@ std::string ciphers::VigenereDecrypt(const std::string& toDecrypt, const std::st
 
     for (int i = 0; i < toDecrypt.size(); ++i)
     {
-        // D[i] = (E[i] - K[i]) % 26 | negative values mess this up so we use abs() | We add 'A' to get the chars
-        // onto the capital letters for ASCII
-        decryptedWord += char((abs(toDecrypt[i] - key[i]) % 26) + 'A');
+        // D[i] = (E[i] - K[i]) % 26
+        // Negative values mess with the result for modulo, so we use +26 to prevent this
+        // We add 'A' to get the chars onto the capital letters for ASCII
+        decryptedWord += char((((toDecrypt[i] - key[i]) + 26) % 26) + 'A');
     }
 
     return decryptedWord;

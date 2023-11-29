@@ -9,5 +9,4 @@ add_executable(SimpleCiphers
         Source/brute_force.cpp
         Source/ciphers.h
         Source/ciphers.cpp
-        Brute_Force_Lists
 )
