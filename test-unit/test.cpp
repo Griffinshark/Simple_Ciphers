@@ -16,6 +16,9 @@
 TEST_CASE("Function: caesar attack", "[brute-force]"){
 	// key = 7
 	REQUIRE(BruteForce::caesarAttack("hXDLYAFg", "aQWERTYz") == "aQWERTYz");
+	REQUIRE(BruteForce::caesarAttack("zayhdilyyf", "strawberry") == "strawberry");
+	REQUIRE(BruteForce::caesarAttack("ZAYHDILYYF", "STRAWBERRY") == "STRAWBERRY");
+	
 }
 
 TEST_CASE("Function: vigenere attack", "[brute-force]"){
