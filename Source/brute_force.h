@@ -11,7 +11,6 @@ class BruteForce{
 
     private:
         static char getShiftedLetter(const char c, const int key);
-        static char getShiftedDigit(const char c, const int key);
         static std::string caesarAttack(const std::string ciphertext, const std::string plaintext);
         static std::string vigenereAttack(const std::string ciphertext, const std::string plaintext);
 };
