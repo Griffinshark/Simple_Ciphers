@@ -22,6 +22,13 @@ TEST_CASE("Function: caesar attack", "[brute-force]"){
 }
 
 TEST_CASE("Function: vigenere attack", "[brute-force]"){
+	// please uncomment line 46 and comment line 47 in the function
 	REQUIRE(BruteForce::vigenereAttack("XELXBMYOWJ", "STRAWBERRY") == "STRAWBERRY");
 	REQUIRE(BruteForce::vigenereAttack("HGECZGGOCYLKAUVUKOAPGIIKFAEIKBNHLKNFHCWAAHSQF", "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS") == "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS");
-}
+} 
+
+TEST_CASE("Function: attack", "[brute-force]"){
+	// please uncomment line 46 and comment line 47 in the function vigenereAttack
+	REQUIRE(BruteForce::attack("XELXBMYOWJ", "STRAWBERRY") == true);
+	REQUIRE(BruteForce::attack("ZAYHDILYYF", "STRAWBERRY") == true);
+} 

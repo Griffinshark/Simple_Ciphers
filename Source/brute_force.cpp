@@ -43,8 +43,8 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
     // Returns a decoded string if cipher was successfully decrypted and an empty string otherwise
     // ciphertext is an uppercase string
 
-    std::ifstream file("./Source/words.txt"); // use this for catch testing
-    //std::ifstream file("words.txt");
+    // std::ifstream file("./Source/words.txt"); // use this for catch testing
+    std::ifstream file("words.txt");
     std::string word = "";
 
     if (file.is_open()){
@@ -72,18 +72,13 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
     return ""; 
 }
 
-/*void BruteForceAlgorithms::GenerateCaesarList(const std::string& EncryptedWord)
-{
-    // Open the file to write to
-    std::ofstream outputFile("generated_caesar.txt");
-    bool test = outputFile.is_open();
+bool BruteForce::attack(const std::string ciphertext, const std::string plaintext){
+    // Performs a brute force attack on the given ciphertext
+    // Returns true if cracking was successful and false otherwise
+    
+    if ( caesarAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    // Generate 26 shifts to account for all possible shifts
-    for (int i = 0; i < 26; ++i)
-    {
-        std::string temp{ciphers::CaesarDecrypt(EncryptedWord, i)};
-        outputFile << temp << std::endl;
-    }
+    if ( vigenereAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    outputFile.close(); 
-} */
+    return false;
+}
