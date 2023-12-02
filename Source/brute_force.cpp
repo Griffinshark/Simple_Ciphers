@@ -75,10 +75,17 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
 bool BruteForce::attack(const std::string ciphertext, const std::string plaintext){
     // Performs a brute force attack on the given ciphertext
     // Returns true if cracking was successful and false otherwise
-    
-    if ( caesarAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    if ( vigenereAttack(ciphertext,plaintext) != "" ){ return true; }
+    // Try to hack assuming a "Caesar Cipher"
+    std::string hackedText {caesarAttack(ciphertext,plaintext)};
+    if (hackedText == plaintext) { return true; }
 
+    std::cout << "Caesar Attack FAILED, attempting Vigenere Attack\n";
+
+    // Try to hack assuming a "Vigenere Cipher"
+    hackedText = vigenereAttack(ciphertext,plaintext);
+    if (hackedText == plaintext) { return true; }
+
+    std::cout << "All attacks have FAILED\n\n";
     return false;
 }
