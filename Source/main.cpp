@@ -26,9 +26,15 @@ int main()
 
     bool exit{false};
 
+    std::cout << "Welcome to simple ciphers! You will be able to test the speed of two basic ciphers, Caesar and Vinegere.\n";
+    std::cout << "You will also be able to perform a brute-force attack for each and see how long it takes to break the cipher\n";
+    std::cout << "Which one do you favor?\n";
+    std::cout << "------------------------------------\n";
+
     // Menu Loop
     while (!exit)
     {
+        std::cout << "Please enter a number from the menu:\n";
         std::cout << "1. Enter New Password\n";
         std::cout << "2. Encrypt Password\n";
         std::cout << "3. Decrypt Password\n";
