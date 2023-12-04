@@ -45,6 +45,18 @@ int main()
             // User inputs password
             std::cout << "Enter the password: \n";
             std::cin >> password;
+
+            for (char& c : password){
+                if (isalpha(c)){ 
+                    c = toupper(c); 
+                    continue;
+                }
+
+                std::cout << "Invalid password. Please use only letters\n";
+                password = "";
+                break;
+                
+            }
             std::cout << '\n';
         }
         // Encrypt Password
