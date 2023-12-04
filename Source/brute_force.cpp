@@ -48,17 +48,17 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
     std::string word = "";
 
     if (file.is_open()){
-        while (getline(file,word)){
+        while (getline(file,word)){ // km(m + n) = km^2 + kmn = kn^2 + kn^2
 
             if (word.size() > ciphertext.size()){ continue; }
 
             std::string upper = "";
 
-            for (char c : word){
+            for (char c : word){ // O(m)
                 upper += toupper(c);
             }
 
-            std::string decodedText = ciphers::VigenereDecrypt(ciphertext,upper);
+            std::string decodedText = ciphers::VigenereDecrypt(ciphertext,upper); // O(n)
 
             if (decodedText == plaintext){ 
                file.close();
@@ -76,16 +76,13 @@ bool BruteForce::attack(const std::string ciphertext, const std::string plaintex
     // Performs a brute force attack on the given ciphertext
     // Returns true if cracking was successful and false otherwise
 
-    // Try to hack assuming a "Caesar Cipher"
-    std::string hackedText {caesarAttack(ciphertext,plaintext)};
-    if (hackedText == plaintext) { return true; }
+    if ( caesarAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    std::cout << "Caesar Attack FAILED, attempting Vigenere Attack\n";
+    std::cout << "Caesar Attack FAILED, attempting Vigenere Attack" << std::endl;
 
     // Try to hack assuming a "Vigenere Cipher"
-    hackedText = vigenereAttack(ciphertext,plaintext);
-    if (hackedText == plaintext) { return true; }
+    if ( vigenereAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    std::cout << "All attacks have FAILED\n\n";
+    std::cout << "All attacks have FAILED" << std::endl;
     return false;
 }
