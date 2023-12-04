@@ -48,17 +48,17 @@ std::string BruteForce::vigenereAttack(const std::string ciphertext, const std::
     std::string word = "";
 
     if (file.is_open()){
-        while (getline(file,word)){
+        while (getline(file,word)){ // km(m + n) = km^2 + kmn = kn^2 + kn^2
 
             if (word.size() > ciphertext.size()){ continue; }
 
             std::string upper = "";
 
-            for (char c : word){
+            for (char c : word){ // O(m)
                 upper += toupper(c);
             }
 
-            std::string decodedText = ciphers::VigenereDecrypt(ciphertext,upper);
+            std::string decodedText = ciphers::VigenereDecrypt(ciphertext,upper); // O(n)
 
             if (decodedText == plaintext){ 
                file.close();

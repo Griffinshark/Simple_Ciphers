@@ -95,6 +95,24 @@ int main()
                 std::cout << "Please enter keyword: \n";
                 std::cin >> keyword;
 
+                if (keyword > password){ 
+                    std::cout << "Invalid: Keyword cannot be larger than password!";
+                    std::cout << '\n';
+                    keyword = "";
+                }
+
+                for (char& c : keyword){
+                    if (isalpha(c)){ 
+                        c = toupper(c); 
+                        continue;
+                    }
+
+                    std::cout << "Invalid password. Please use only letters\n";
+                    keyword = "";
+                    break;
+                }
+
+                if (keyword != ""){
                 // Encrypt
                 auto start = std::chrono::steady_clock::now();
                 encryptedPassword = ciphers::VigenereEncrypt(password, keyword);
@@ -108,6 +126,7 @@ int main()
                           << " nanoseconds\n\n";
 
                 vigenereUsed = true;
+                }
             }
             // Invalid Choice
             else
@@ -163,7 +182,7 @@ int main()
                 auto duration = end - start;
 
                 // Display SUCCESSFUL attack and attack time
-                std::cout << "Attack SUCCESSFUL\n";
+                std::cout << "Attack SUCCESSFUL \n";
                 std::cout << "Attack Time: "
                           << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
                           << " nanoseconds\n\n";
