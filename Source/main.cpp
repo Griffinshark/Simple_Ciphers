@@ -28,17 +28,14 @@ bool isAllLetters(const std::string &str) {
 std::string getInput(){
     // ensures passwords and keywords are uppercase and contain only letters
     std::string str;
-    do {
-        std::cin >> str;
+    std::cin >> str;
 
-        // Convert the entered str to uppercase
-        std::transform(str.begin(), str.end(), str.begin(), toupper);
+    while(!isAllLetters(str)){
+         std::cout << "Input should not contain special characters nor digits. Please re-enter: \n";
+         std::cin >> str; 
+    }
 
-        if (!isAllLetters(str)) {
-            std::cout << "Input should not contain special characters nor digits. Please re-enter: \n";
-        }
-    } while (!isAllLetters(str));
-
+    std::transform(str.begin(), str.end(), str.begin(), toupper);
     return str;
 }
 
