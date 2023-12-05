@@ -78,8 +78,6 @@ bool BruteForce::attack(const std::string ciphertext, const std::string plaintex
 
     if ( caesarAttack(ciphertext,plaintext) != "" ){ return true; }
 
-    std::cout << "Caesar Attack FAILED, attempting Vigenere Attack" << std::endl;
-
     // Try to hack assuming a "Vigenere Cipher"
     if ( vigenereAttack(ciphertext,plaintext) != "" ){ return true; }
 

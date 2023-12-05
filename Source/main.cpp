@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <algorithm>
 #include "brute_force.h"
 #include "ciphers.h"
 
@@ -15,14 +16,30 @@
 // https://cmake.org/cmake/help/latest/command/include_directories.html
 // https://www.youtube.com/watch?v=QYaQStudgnE
 
-
-bool hasSpecialCharacters(const std::string &str) {
+bool isAllLetters(const std::string &str) {
     for (char ch : str) {
-        if (!isalnum(ch)) {
+        if (isalpha(ch)) {
             return true;
         }
     }
     return false;
+}
+
+std::string getInput(){
+    // ensures passwords and keywords are uppercase and contain only letters
+    std::string str;
+    do {
+        std::cin >> str;
+
+        // Convert the entered str to uppercase
+        std::transform(str.begin(), str.end(), str.begin(), toupper);
+
+        if (!isAllLetters(str)) {
+            std::cout << "Input should not contain special characters nor digits. Please re-enter: \n";
+        }
+    } while (!isAllLetters(str));
+
+    return str;
 }
 
 int main() {
@@ -34,17 +51,8 @@ int main() {
     std::string keyword;
     int shift;
 
-    std::cout << "Welcome to simple ciphers! Please enter a password with no special characters: \n";
-    do {
-        std::cin >> password;
-
-        // Convert the entered password to uppercase
-        std::transform(password.begin(), password.end(), password.begin(), ::toupper);
-
-        if (hasSpecialCharacters(password)) {
-            std::cout << "Password should not contain special characters. Please re-enter: \n";
-        }
-    } while (hasSpecialCharacters(password));
+    std::cout << "Welcome to simple ciphers! Please enter a password with no special characters nor digits: \n";
+    password = getInput();
 
     // Caesar Encryption
     std::cout << "\nEncrypting using Caesar Cipher...\n";
@@ -64,7 +72,7 @@ int main() {
     // Vigenere Encryption
     std::cout << "\nEncrypting using Vigenere Cipher...\n";
     std::cout << "Enter the keyword for Vigenere Cipher: \n";
-    std::cin >> keyword;
+    keyword = getInput();
 
     auto startEncryptVigenere = std::chrono::steady_clock::now();
     encryptedVigenere = ciphers::VigenereEncrypt(password, keyword);
@@ -75,6 +83,15 @@ int main() {
     std::cout << "Encryption Time (Vigenere Cipher): "
               << std::chrono::duration_cast<std::chrono::nanoseconds>(durationEncryptVigenere).count()
               << " nanoseconds\n\n";
+
+    // Compare encryption times
+    if (durationEncryptCaesar < durationEncryptVigenere) {
+        std::cout << "Encryption using Caesar Cipher was faster!\n\n";
+    } else if (durationEncryptCaesar > durationEncryptVigenere) {
+        std::cout << "Encryption using Vigenere Cipher was faster!\n\n";
+    } else {
+        std::cout << "Encryption times were equal!\n\n";
+    }
 
     // Decrypt Caesar Cipher
     auto startDecryptCaesar = std::chrono::steady_clock::now();
@@ -142,11 +159,11 @@ int main() {
 
     // Compare brute-force attack times
     if (durationAttackCaesar < durationAttackVigenere) {
-        std::cout << "Brute-Force Attack using Caesar Cipher was faster!\n\n";
+        std::cout << "Brute-Force Attack using Caesar Cipher was faster!\n";
     } else if (durationAttackCaesar > durationAttackVigenere) {
-        std::cout << "Brute-Force Attack using Vigenere Cipher was faster!\n\n";
+        std::cout << "Brute-Force Attack using Vigenere Cipher was faster!\n";
     } else {
-        std::cout << "Brute-Force Attack times were equal!\n\n";
+        std::cout << "Brute-Force Attack times were equal!\n";
     }
 
     return 0;
