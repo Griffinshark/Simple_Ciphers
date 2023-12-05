@@ -15,194 +15,139 @@
 // https://cmake.org/cmake/help/latest/command/include_directories.html
 // https://www.youtube.com/watch?v=QYaQStudgnE
 
-int main()
-{
-    std::string password;
-    std::string encryptedPassword;
-    std::string keyword;
-    int shift;
-    bool caesarUsed{false};
-    bool vigenereUsed{false};
 
-    bool exit{false};
-
-    std::cout << "Welcome to simple ciphers! You will be able to test the speed of two basic ciphers, Caesar and Vinegere.\n";
-    std::cout << "You will also be able to perform a brute-force attack for each and see how long it takes to break the cipher\n";
-    std::cout << "Which one do you favor?\n";
-    std::cout << "------------------------------------\n";
-
-    // Menu Loop
-    while (!exit)
-    {
-        std::cout << "Please enter a number from the menu:\n";
-        std::cout << "1. Enter New Password\n";
-        std::cout << "2. Encrypt Password\n";
-        std::cout << "3. Decrypt Password\n";
-        std::cout << "4. Perform Attack\n";
-        std::cout << "5. Exit\n";
-
-        int choice;
-        std::cin >> choice;
-        std::cout << '\n';
-
-        // New Password
-        if (choice == 1)
-        {
-            // User inputs password
-            std::cout << "Enter the password: \n";
-            std::cin >> password;
-
-            for (char& c : password){
-                if (isalpha(c)){ 
-                    c = toupper(c); 
-                    continue;
-                }
-
-                std::cout << "Invalid password. Please use only letters\n";
-                password = "";
-                break;
-                
-            }
-            std::cout << '\n';
-        }
-        // Encrypt Password
-        else if (choice == 2 && !password.empty())
-        {
-            std::cout << "1. Encrypt with Caesar Cipher\n";
-            std::cout << "2. Encrypt with Vigenere Cipher\n";
-            std::cin >> choice;
-            std::cout << '\n';
-
-            // Caesar Cipher
-            if (choice == 1)
-            {
-                // Obtain shift from user
-                std::cout << "Please enter shift: \n";
-                std::cin >> shift;
-
-                // Encrypt
-                auto start = std::chrono::steady_clock::now();
-                encryptedPassword = ciphers::CaesarEncrypt(password, shift);
-                auto end = std::chrono::steady_clock::now();
-                auto duration = end - start;
-
-                // Display Encrypted Password and decryption time
-                std::cout << "Encrypted Password: " << encryptedPassword << "\n";
-                std::cout << "Encryption Time: "
-                          << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
-                          << " nanoseconds\n\n";
-
-                caesarUsed = true;
-            }
-            // Vigenere Cipher
-            else if (choice == 2)
-            {
-                // Obtain keyword from user
-                std::cout << "Please enter keyword: \n";
-                std::cin >> keyword;
-
-                if (keyword > password){ 
-                    std::cout << "Invalid: Keyword cannot be larger than password!";
-                    std::cout << '\n';
-                    keyword = "";
-                }
-
-                for (char& c : keyword){
-                    if (isalpha(c)){ 
-                        c = toupper(c); 
-                        continue;
-                    }
-
-                    std::cout << "Invalid password. Please use only letters\n";
-                    keyword = "";
-                    break;
-                }
-
-                if (keyword != ""){
-                // Encrypt
-                auto start = std::chrono::steady_clock::now();
-                encryptedPassword = ciphers::VigenereEncrypt(password, keyword);
-                auto end = std::chrono::steady_clock::now();
-                auto duration = end - start;
-
-                // Display Encrypted Password and decryption time
-                std::cout << "Encrypted Password: " << encryptedPassword << "\n\n";
-                std::cout << "Encryption Time: "
-                          << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
-                          << " nanoseconds\n\n";
-
-                vigenereUsed = true;
-                }
-            }
-            // Invalid Choice
-            else
-            {
-                std::cout << "Invalid choice!\n";
-            }
-        }
-        // Decrypt Password
-        else if (choice == 3)
-        {
-            std::string decryptedPassword;
-
-            if (caesarUsed)
-            {
-                // Decrypt
-                auto start = std::chrono::steady_clock::now();
-                decryptedPassword = ciphers::CaesarDecrypt(encryptedPassword, shift);
-                auto end = std::chrono::steady_clock::now();
-                auto duration = end - start;
-
-                // Display decrypted password and decryption time
-                std::cout << "Decrypted Password: " << decryptedPassword << '\n';
-                std::cout << "Decryption Time: "
-                          << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
-                          << " nanoseconds\n\n";
-            }
-            else if (vigenereUsed)
-            {
-                // Decrypt
-                auto start = std::chrono::steady_clock::now();
-                decryptedPassword = ciphers::VigenereDecrypt(encryptedPassword, keyword);
-                auto end = std::chrono::steady_clock::now();
-                auto duration = end - start;
-
-                // Display decrypted password and decryption time
-                std::cout << "Decrypted Password: " << decryptedPassword << '\n';
-                std::cout << "Decryption Time: "
-                          << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
-                          << " nanoseconds\n\n";
-            }
-            else
-            {
-                std::cout << "No password to decrypt!\n\n";
-            }
-        }
-        // Perform Attack
-        else if (choice == 4 && !encryptedPassword.empty())
-        {
-            auto start = std::chrono::steady_clock::now();
-            if (BruteForce::attack(encryptedPassword, password))
-            {
-                auto end = std::chrono::steady_clock::now();
-                auto duration = end - start;
-
-                // Display SUCCESSFUL attack and attack time
-                std::cout << "Attack SUCCESSFUL \n";
-                std::cout << "Attack Time: "
-                          << std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count()
-                          << " nanoseconds\n\n";
-            }
-        }
-        // Exit
-        else if (choice == 5)
-        {
-            exit = true;
-        }
-        // Invalid Choice
-        else
-        {
-            std::cout << "Invalid choice!\n\n";
+bool hasSpecialCharacters(const std::string &str) {
+    for (char ch : str) {
+        if (!isalnum(ch)) {
+            return true;
         }
     }
+    return false;
+}
+
+int main() {
+    std::string password;
+    std::string encryptedCaesar;
+    std::string encryptedVigenere;
+    std::string decryptedCaesar;
+    std::string decryptedVigenere;
+    std::string keyword;
+    int shift;
+
+    std::cout << "Welcome to simple ciphers! Please enter a password with no special characters: \n";
+    do {
+        std::cin >> password;
+
+        // Convert the entered password to uppercase
+        std::transform(password.begin(), password.end(), password.begin(), ::toupper);
+
+        if (hasSpecialCharacters(password)) {
+            std::cout << "Password should not contain special characters. Please re-enter: \n";
+        }
+    } while (hasSpecialCharacters(password));
+
+    // Caesar Encryption
+    std::cout << "\nEncrypting using Caesar Cipher...\n";
+    std::cout << "Enter the shift for Caesar Cipher: \n";
+    std::cin >> shift;
+
+    auto startEncryptCaesar = std::chrono::steady_clock::now();
+    encryptedCaesar = ciphers::CaesarEncrypt(password, shift);
+    auto endEncryptCaesar = std::chrono::steady_clock::now();
+    auto durationEncryptCaesar = endEncryptCaesar - startEncryptCaesar;
+
+    std::cout << "Encrypted Password (Caesar Cipher): " << encryptedCaesar << "\n";
+    std::cout << "Encryption Time (Caesar Cipher): "
+              << std::chrono::duration_cast<std::chrono::nanoseconds>(durationEncryptCaesar).count()
+              << " nanoseconds\n\n";
+
+    // Vigenere Encryption
+    std::cout << "\nEncrypting using Vigenere Cipher...\n";
+    std::cout << "Enter the keyword for Vigenere Cipher: \n";
+    std::cin >> keyword;
+
+    auto startEncryptVigenere = std::chrono::steady_clock::now();
+    encryptedVigenere = ciphers::VigenereEncrypt(password, keyword);
+    auto endEncryptVigenere = std::chrono::steady_clock::now();
+    auto durationEncryptVigenere = endEncryptVigenere - startEncryptVigenere;
+
+    std::cout << "Encrypted Password (Vigenere Cipher): " << encryptedVigenere << "\n";
+    std::cout << "Encryption Time (Vigenere Cipher): "
+              << std::chrono::duration_cast<std::chrono::nanoseconds>(durationEncryptVigenere).count()
+              << " nanoseconds\n\n";
+
+    // Decrypt Caesar Cipher
+    auto startDecryptCaesar = std::chrono::steady_clock::now();
+    decryptedCaesar = ciphers::CaesarDecrypt(encryptedCaesar, shift);
+    auto endDecryptCaesar = std::chrono::steady_clock::now();
+    auto durationDecryptCaesar = endDecryptCaesar - startDecryptCaesar;
+
+    std::cout << "Decrypted Password (Caesar Cipher): " << decryptedCaesar << "\n";
+    std::cout << "Decryption Time (Caesar Cipher): "
+              << std::chrono::duration_cast<std::chrono::nanoseconds>(durationDecryptCaesar).count()
+              << " nanoseconds\n\n";
+
+    // Decrypt Vigenere Cipher
+    auto startDecryptVigenere = std::chrono::steady_clock::now();
+    decryptedVigenere = ciphers::VigenereDecrypt(encryptedVigenere, keyword);
+    auto endDecryptVigenere = std::chrono::steady_clock::now();
+    auto durationDecryptVigenere = endDecryptVigenere - startDecryptVigenere;
+
+    std::cout << "Decrypted Password (Vigenere Cipher): " << decryptedVigenere << "\n";
+    std::cout << "Decryption Time (Vigenere Cipher): "
+              << std::chrono::duration_cast<std::chrono::nanoseconds>(durationDecryptVigenere).count()
+              << " nanoseconds\n\n";
+
+    // Compare decryption times
+    if (durationDecryptCaesar < durationDecryptVigenere) {
+        std::cout << "Decryption using Caesar Cipher was faster!\n\n";
+    } else if (durationDecryptCaesar > durationDecryptVigenere) {
+        std::cout << "Decryption using Vigenere Cipher was faster!\n\n";
+    } else {
+        std::cout << "Decryption times were equal!\n\n";
+    }
+
+    // Brute Force Attacks
+    std::cout << "Performing Brute-Force Attacks...\n";
+
+    // Brute Force Attack for Caesar Cipher
+    auto startAttackCaesar = std::chrono::steady_clock::now();
+    bool caesarAttackSuccess = BruteForce::attack(encryptedCaesar, password);
+    auto endAttackCaesar = std::chrono::steady_clock::now();
+    auto durationAttackCaesar = endAttackCaesar - startAttackCaesar;
+
+    if (caesarAttackSuccess) {
+        std::cout << "Brute-Force Attack (Caesar Cipher) SUCCESSFUL\n";
+        std::cout << "Attack Time (Caesar Cipher): "
+                  << std::chrono::duration_cast<std::chrono::nanoseconds>(durationAttackCaesar).count()
+                  << " nanoseconds\n\n";
+    } else {
+        std::cout << "Brute-Force Attack (Caesar Cipher) FAILED\n\n";
+    }
+
+    // Brute Force Attack for Vigenere Cipher
+    auto startAttackVigenere = std::chrono::steady_clock::now();
+    bool vigenereAttackSuccess = BruteForce::attack(encryptedVigenere, password);
+    auto endAttackVigenere = std::chrono::steady_clock::now();
+    auto durationAttackVigenere = endAttackVigenere - startAttackVigenere;
+
+    if (vigenereAttackSuccess) {
+        std::cout << "Brute-Force Attack (Vigenere Cipher) SUCCESSFUL\n";
+        std::cout << "Attack Time (Vigenere Cipher): "
+                  << std::chrono::duration_cast<std::chrono::nanoseconds>(durationAttackVigenere).count()
+                  << " nanoseconds\n\n";
+    } else {
+        std::cout << "Brute-Force Attack (Vigenere Cipher) FAILED\n\n";
+    }
+
+    // Compare brute-force attack times
+    if (durationAttackCaesar < durationAttackVigenere) {
+        std::cout << "Brute-Force Attack using Caesar Cipher was faster!\n\n";
+    } else if (durationAttackCaesar > durationAttackVigenere) {
+        std::cout << "Brute-Force Attack using Vigenere Cipher was faster!\n\n";
+    } else {
+        std::cout << "Brute-Force Attack times were equal!\n\n";
+    }
+
+    return 0;
 }
