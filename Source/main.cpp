@@ -18,15 +18,15 @@
 
 bool isAllLetters(const std::string &str) {
     for (char ch : str) {
-        if (isalpha(ch)) {
-            return true;
+        if (!isalpha(ch)) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 std::string getInput(){
-    // ensures passwords and keywords are uppercase and contain only letters
+    // ensures passwords are uppercase and contain only letters
     std::string str;
     std::cin >> str;
 
@@ -70,6 +70,11 @@ int main() {
     std::cout << "\nEncrypting using Vigenere Cipher...\n";
     std::cout << "Enter the keyword for Vigenere Cipher: \n";
     keyword = getInput();
+
+    while( keyword.size() > password.size() ){
+        std::cout << "Keyword must not be longer than password. Please re-enter: \n";
+        keyword = getInput();
+    }
 
     auto startEncryptVigenere = std::chrono::steady_clock::now();
     encryptedVigenere = ciphers::VigenereEncrypt(password, keyword);
