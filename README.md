@@ -12,4 +12,4 @@ the hacker uses a dictionary file to test various possible keywords. If a match 
 encryptions are tested using the hacking methods and the hacking/attack time is displayed, as well as, which attack was faster.
 
 # Installation
-Download the repo and ensure that the file "Words.txt" located in the "Source" folder is in the working directory.
+Download the repo and ensure that the file "Words.txt," located in the "Source" folder, is in the working directory.
